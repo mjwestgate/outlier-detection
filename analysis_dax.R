@@ -22,7 +22,9 @@ data_filtered <- data %>%
   select(-taxonConceptID, -dataGeneralizations, -dataProviderUid, -datasetID, 
          -datasetName, -dataProviderName)
 
-
+data_filtered |>
+  group_by(response) |>
+  count()
 
 frogs_sf <- data_filtered |>
   st_as_sf(coords = c("decimalLongitude", "decimalLatitude")) |>
@@ -58,11 +60,9 @@ set.seed(100)
 frogs_cv <- vfold_cv(frogs_train, v = 5)
 
 # define model
-frogs_recipe <- recipe(
-  frogs_train, 
-  formula = response ~ .
-  ) %>%
-  update_role(recordID, new_role = "ID") %>%
+frogs_recipe <- recipe(response ~ is_citsci,
+                       data = frogs_train) %>%
+  # update_role(recordID, new_role = "ID") %>%
   step_dummy(all_nominal())
 
 # frogs_recipe |>
