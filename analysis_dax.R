@@ -1,5 +1,3 @@
-
-
 library(galah)
 library(tidyverse)
 library(sf)
@@ -8,8 +6,12 @@ library(ozmaps)
 library(tidymodels)
 library(tidysdm)
 
+data <- read_csv(here("frogs_clean.csv")) |>
+  mutate(is_citsci = as.integer(is_citsci),
+         response = as.integer(outside_range))
 
-data <- readRDS(here("frog_outliers.rds"))
+
+
 
 
 data_filtered <- data %>%

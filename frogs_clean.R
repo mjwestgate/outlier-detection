@@ -20,3 +20,17 @@ frogs_clean <- frogs %>%
          log_uncert_fixed)
 
 write.csv(frogs_clean,'frogs_clean.csv')
+
+
+frogs |>
+  filter(eventDate < ymd("1600-01-01")) |>
+  group_by(dataResourceUid) |>
+  summarize(count = n())
+
+library(galah)
+result <- galah_call() |>
+  filter(dataResourceUid == "dr710",
+         year == 1599) |>
+  count() |>
+  collapse()
+result$url
